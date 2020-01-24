@@ -6,19 +6,19 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:13:51 by afaragi           #+#    #+#             */
-/*   Updated: 2019/12/16 21:05:55 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/24 00:25:46 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-#include "../minishell.h"
+# include "../minishell.h"
 
 typedef	struct		s_list
 {
 	char			*content;
-	struct stat st;
+	struct stat		st;
 	size_t			content_size;
 	char			*path;
 	struct s_list	*next;
@@ -82,7 +82,6 @@ int					ft_ctc(char const *s, char c);
 int					ft_count_size(char const *s);
 void				ft_remplir(char *dest, char const *src, int start, int end);
 void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
-t_list				*ft_newlst(char *content, size_t content_size , struct stat st, char *path);
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*fu)(t_list *elem));
@@ -90,6 +89,8 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*fu)(t_list *elem));
 char				*ft_isspace(const char *str);
 int					ft_intcount(int n);
 t_list				*ft_lstpush(t_list **alst, t_list *new);
-void				ft_deletlist(t_list **alst, void (*del)(void *, size_t, void *));
-void				ft_deletone(t_list **alst, void (*del)(void *, size_t, void *));
+void				ft_deletlist(t_list **alst,
+						void (*del)(void *, size_t, void *));
+void				ft_deletone(t_list **alst,
+						void (*del)(void *, size_t, void *));
 #endif

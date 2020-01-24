@@ -6,7 +6,7 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 21:41:54 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/13 23:06:03 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/24 00:22:23 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_putstr(char const *s)
 	i = 0;
 	if (s && s[i])
 	{
-		while(s[i])
+		while (s[i])
 			write(1, &s[i++], 1);
 	}
 	else

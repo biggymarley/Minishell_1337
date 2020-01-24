@@ -6,15 +6,15 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 22:16:00 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/23 02:40:40 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/24 03:00:00 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_putstr_char_fd(char const *str, int fd, char c)
+void		ft_putstr_char_fd(char const *str, int fd, char c)
 {
-	int i;
+	int		i;
 
 	i = 0;
 	if (str)
@@ -29,38 +29,46 @@ void	ft_putstr_char_fd(char const *str, int fd, char c)
 	}
 }
 
-int falscmd(char **str, char *buff, t_env *env)
+int			reprepare_for_print(char ***tmp, t_env *env, char *buff)
 {
-	char **tmp;
-	char *cmd;
-	char **ptr;
-	int i;
+	char	*cmd;
 
-	i = 0;
 	cmd = ft_strtrim(buff);
-	if(cots_check(&cmd))
+	cots_check(&cmd);
+	*tmp = ft_strsplit(cmd, ' ');
+	rebase(*tmp);
+	if (tmp)
 	{
-		tmp = ft_strsplit(cmd, ' ');
-		rebase(tmp);
-	}
-	if(tmp)
-	{
-		if_home(tmp, env);
-		if(ft_check_Dollars(tmp, env) == 0)
+		if_home(*tmp, env);
+		if (ft_check_dollars(*tmp, env) == 0)
 		{
-			delkill(tmp);
+			delkill(*tmp);
 			free(cmd);
-			return(1);
+			return (1);
 		}
 	}
 	free(cmd);
-    if((str == NULL || str[0] == NULL))
+	return (1);
+}
+
+int			falscmd(char **str, char *buff, t_env *env)
+{
+	char	**tmp;
+	char	*cmd;
+	char	**ptr;
+	int		i;
+
+	i = 0;
+	if (str && str[0])
+		return (0);
+	reprepare_for_print(&tmp, env, buff);
+	if ((str == NULL || str[0] == NULL))
 	{
 		ft_putstr_fd(tmp[0], 2);
 		write(2, &": command not found\n", 20);
 		delkill(tmp);
-		return(1);
+		return (1);
 	}
 	delkill(tmp);
-	return(0);
+	return (0);
 }

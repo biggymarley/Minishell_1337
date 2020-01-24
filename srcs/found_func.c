@@ -6,46 +6,46 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 23:52:52 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/17 22:42:46 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/24 04:04:57 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-void delkill(char **paths)
+
+void		delkill(char **paths)
 {
-	int i;
-	
+	int		i;
+
 	i = 0;
-	if(paths)
+	if (paths)
 	{
-		while(paths[i])
+		while (paths[i])
 			free(paths[i++]);
 		free(paths);
 	}
 }
 
+int			check(t_env **lst, char *str)
+{
+	if (access(str, F_OK) == 0)
+		return (1);
+	*lst = search_env(*lst, "PATH");
+	return (0);
+}
+
 char		**found_func(t_env *lst, char *cmd, char **str)
 {
-	char **paths;
-	char *tmp;
-
-	int i;
-	char **tst;
-	int found = 0;
+	char	**paths;
+	char	*tmp;
+	int		i;
 
 	i = -1;
-	if(access(str[0], F_OK) == 0)
-		return(str);
-	while(lst)
-	{
-		if(ft_strcmp(lst->name, "PATH") == 0)
-			break;
-		lst = lst->next;
-	}
-	if(lst == NULL)
-		return(NULL);
+	if (check(&lst, str[0]) == 1)
+		return (str);
+	if (lst == NULL)
+		return (NULL);
 	paths = ft_strsplit(lst->value, ':');
-	while(paths[++i])
+	while (paths[++i])
 	{
 		tmp = paths[i];
 		paths[i] = ft_strjoin(paths[i], "/");
@@ -53,14 +53,11 @@ char		**found_func(t_env *lst, char *cmd, char **str)
 		tmp = paths[i];
 		paths[i] = ft_strjoin(paths[i], cmd);
 		free(tmp);
-		if(access(paths[i], F_OK) == 0)
-			break;
+		if (access(paths[i], F_OK) == 0)
+			break ;
 	}
 	free(str[0]);
 	str[0] = ft_strdup(paths[i]);
 	delkill(paths);
-	return(str);	
+	return (str);
 }
-
-
-//signal(SIGINT, prompt);

@@ -6,7 +6,7 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 08:59:35 by afaragi           #+#    #+#             */
-/*   Updated: 2019/11/23 01:50:06 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/24 00:23:14 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ int	ft_strcmp(const char *s1, const char *s2)
 		return (0);
 	if (s1 == NULL && s2)
 		return (-1);
-	//if (s1 && !s2)
-		//return (1);
 	while (s1[i] || s2[i])
 	{
 		if (s1[i] == s2[i])

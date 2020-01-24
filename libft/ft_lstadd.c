@@ -6,7 +6,7 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/26 04:52:02 by afaragi           #+#    #+#             */
-/*   Updated: 2019/11/22 04:11:08 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/24 00:17:34 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,5 @@ void	ft_lstadd(t_list **alst, t_list *new)
 	{
 		new->next = (*alst);
 		*alst = new;
-			}
+	}
 }

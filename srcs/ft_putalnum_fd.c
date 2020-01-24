@@ -1,37 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   ft_putalnum_fd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 02:38:53 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 03:01:51 by afaragi          ###   ########.fr       */
+/*   Created: 2020/01/24 02:48:09 by afaragi           #+#    #+#             */
+/*   Updated: 2020/01/24 03:02:40 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		ft_echo(char **str, t_env *env)
+void		ft_putalnum_fd(char const *str, int fd)
 {
-	int	i;
-	int	j;
-	int	s;
+	int		i;
 
-	i = 1;
-	j = 0;
-	if (ft_strcmp(str[0], "echo") == 0 ||
-			ft_strcmp(str[0], "ECHO") == 0)
+	i = 0;
+	if (str)
 	{
 		while (str[i])
 		{
-			ft_putstr(str[i]);
-			if (str[i] && str[i + 1])
-				write(1, " ", 1);
+			if (!ft_isalnum(str[i]))
+				break ;
+			ft_putchar_fd(str[i], fd);
 			i++;
 		}
-		write(1, "\n", 1);
-		return (1);
 	}
-	return (0);
 }

@@ -1,37 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 02:38:53 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 03:01:51 by afaragi          ###   ########.fr       */
+/*   Created: 2020/01/24 02:48:48 by afaragi           #+#    #+#             */
+/*   Updated: 2020/01/24 03:30:50 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int		ft_echo(char **str, t_env *env)
+void		move_replace(char *str)
 {
-	int	i;
-	int	j;
-	int	s;
+	int		i;
 
-	i = 1;
-	j = 0;
-	if (ft_strcmp(str[0], "echo") == 0 ||
-			ft_strcmp(str[0], "ECHO") == 0)
+	i = -1;
+	while (str[++i])
+		str[i] = str[i + 1];
+}
+
+void		cut_quots(char **str, int *index, int balance)
+{
+	if ((*str)[(*index)] == '"' && (balance == 0 || balance == 1))
 	{
-		while (str[i])
-		{
-			ft_putstr(str[i]);
-			if (str[i] && str[i + 1])
-				write(1, " ", 1);
-			i++;
-		}
-		write(1, "\n", 1);
-		return (1);
+		move_replace(&(*str)[(*index)]);
+		(*index)--;
 	}
-	return (0);
+	if ((*str)[(*index)] == '\'' && (balance == 0 || balance == 2))
+	{
+		move_replace(&(*str)[(*index)]);
+		(*index)--;
+	}
 }

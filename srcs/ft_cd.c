@@ -6,103 +6,92 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 01:34:51 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/23 21:46:54 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/24 03:56:56 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_env *search_env(t_env *env,char *name)
+void		ft_if_no_existe(t_env **env, char *envname)
 {
-	t_env *ptr;
-	
-	ptr = env;
-	if (ptr)
-	{
-		while(ptr && ptr->name)
-			{
-				if(ft_strcmp(ptr->name , name) == 0)
-					return(ptr);
-				ptr = ptr->next;
-			}
-	}
-	return(NULL);
-}
-void	ft_if_no_existe(t_env **env, char *envname)
-{
-	char *newstr;
-	char **newenvadded;
-	char *tmp;
+	char	*newstr;
+	char	**newenvadded;
+	char	*tmp;
 
-	newstr = getcwd(NULL ,0);
+	newstr = getcwd(NULL, 0);
 	tmp = newstr;
 	newstr = ft_strjoin(envname, newstr);
 	free(tmp);
 	newenvadded = ft_strsplit(newstr, '@');
-	ft_setenv(env,newenvadded);
+	ft_setenv(env, newenvadded);
 	delkill(newenvadded);
 	free(newstr);
 }
 
-char **ft_cd(char **str, t_env **env, t_cmd *cmd)
+void		cd_cases(t_cd *cd, char *str, t_env **env)
 {
-	char *nwpwd;
-	char *value;
-	char *newstr;
-	char *tmp;
-	char **newenvadded;
-	t_env *ptr;
-	
-	ptr = NULL;
-	if(ft_strcmp(str[0], "cd") == 0)
+	if (!str)
+		(*cd).ptr = search_env(*env, "HOME");
+	else if (ft_strcmp(str, "-") == 0)
 	{
-		if (!str[1])
-			ptr = search_env(*env, "HOME");
-		else if(ft_strcmp(str[1], "-") == 0)
-		{
-			ptr = search_env(*env, "OLDPWD");
-			if(ptr)
-				ft_putendl(ptr->value);
-		}
-		else if(ft_strcmp(str[1], "~") == 0)
-		{
-			ptr = search_env(*env, "HOME");
-			if (ptr)
-				ft_putendl(ptr->value);
-		}
-		if (ptr)
-			nwpwd = ft_strdup(ptr->value);
-		else
-			nwpwd = ft_strdup(str[1]);
-		if (access(nwpwd, F_OK | X_OK) != 0)
-		{
-			ft_putstr_fd("\033[1;31m$>", 2);
-			ft_putstr((*cmd).color);		
-			ft_putstr_fd(": cd: " , 2);
-			ft_putstr_fd(str[1], 2);
-			ft_putendl_fd(": No such file or directory", 2);
-			free(nwpwd);
-			return(ltot(*env));
-		}
-			ptr = search_env(*env, "OLDPWD");
-			if(!ptr)
-				ft_if_no_existe(env,"NOTHING@OLDPWD@");
-			else
-			{
-				free(ptr->value);
-				ptr->value = getcwd(NULL, 0);
-			}
-			chdir(nwpwd);
-			ptr = search_env(ptr, "PWD");
-			if(!ptr)
-				ft_if_no_existe(env,"NOTHING@PWD@");				
-			else
-			{
-				free(ptr->value);
-				ptr->value = getcwd(NULL, 0);
-			}
-			free(nwpwd);
-			return(ltot(*env));	
+		(*cd).ptr = search_env(*env, "OLDPWD");
+		if ((*cd).ptr)
+			ft_putendl((*cd).ptr->value);
 	}
-	return(ltot(*env));
+	else if (ft_strcmp(str, "~") == 0)
+	{
+		(*cd).ptr = search_env(*env, "HOME");
+		if ((*cd).ptr)
+			ft_putendl((*cd).ptr->value);
+	}
+}
+
+int			if_no_directory(t_cd *cd, t_cmd *cmd, char *str)
+{
+	if (access((*cd).nwpwd, F_OK | X_OK) != 0)
+	{
+		ft_putstr_fd("\033[1;31m$>", 2);
+		ft_putstr((*cmd).color);
+		ft_putstr_fd(": cd: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putendl_fd(": No such file or directory", 2);
+		free((*cd).nwpwd);
+		return (1);
+	}
+	return (0);
+}
+
+void		if_no_env(t_cd *cd, t_env **env, char *name, char *spli)
+{
+	(*cd).ptr = search_env(*env, name);
+	if (!(*cd).ptr)
+		ft_if_no_existe(env, spli);
+	else
+	{
+		free((*cd).ptr->value);
+		(*cd).ptr->value = getcwd(NULL, 0);
+	}
+}
+
+char		**ft_cd(char **str, t_env **env, t_cmd *cmd)
+{
+	t_cd	cd;
+
+	cd.ptr = NULL;
+	if (ft_strcmp(str[0], "cd") == 0)
+	{
+		cd_cases(&cd, str[1], env);
+		if (cd.ptr)
+			cd.nwpwd = ft_strdup(cd.ptr->value);
+		else
+			cd.nwpwd = ft_strdup(str[1]);
+		if (if_no_directory(&cd, cmd, str[1]) == 1)
+			return (ltot(*env));
+		if_no_env(&cd, env, "OLDPWD", "NOTHING@OLDPWD@");
+		chdir(cd.nwpwd);
+		if_no_env(&cd, env, "PWD", "NOTHING@PWD@");
+		free(cd.nwpwd);
+		return (ltot(*env));
+	}
+	return (ltot(*env));
 }
