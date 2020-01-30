@@ -1,55 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ltot.c                                             :+:      :+:    :+:   */
+/*   ft_cots_checker.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/08 01:53:18 by afaragi           #+#    #+#             */
+/*   Created: 2020/01/27 00:15:49 by afaragi           #+#    #+#             */
 /*   Updated: 2020/01/27 02:49:58 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void		ft_rmpl(char **str, char *s, char *s2)
+int			cots_check(char **str)
 {
-	char	*tmp;
+	int		i;
+	int		balance;
 
-	tmp = *str;
-	*str = ft_strjoin(*str, s);
-	free(tmp);
-	tmp = *str;
-	*str = ft_strjoin(*str, "=");
-	free(tmp);
-	tmp = *str;
-	*str = ft_strjoin(*str, s2);
-	free(tmp);
-}
-
-char		**ltot(t_env *env)
-{
-	t_env	*new;
-	int		c;
-	char	**str;
-
-	new = env;
-	c = 0;
-	while (new)
+	i = 0;
+	balance = 0;
+	while ((*str)[i] != '\0')
 	{
-		c++;
-		new = new->next;
+		if ((*str)[i] == '"' && balance != 2)
+			balance = (balance > 0) ? 0 : 1;
+		if ((*str)[i] == '\'' && balance != 1)
+			balance = (balance > 0) ? 0 : 2;
+		if ((*str)[i] == ' ' && (balance == 1 || balance == 2))
+			(*str)[i] = 5;
+		if ((*str)[i] == '\\' && balance == 0)
+			move_replace(&(*str)[i--]);
+		cut_quots(str, &i, balance);
+		i++;
 	}
-	if (!(str = (char **)ft_memalloc(sizeof(char *) * (c + 1))))
-		return (NULL);
-	ft_bzero((void*)str, c + 1);
-	c = 0;
-	while (env)
-	{
-		str[c] = ft_strnew(0);
-		ft_rmpl(&str[c], env->name, env->value);
-		c++;
-		env = env->next;
-	}
-	return (str);
+	if (balance == 0)
+		return (1);
+	else
+		ft_putstr_fd("Unmatched '.\n", 2);
+	return (0);
 }

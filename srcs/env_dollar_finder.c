@@ -1,37 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_echo.c                                          :+:      :+:    :+:   */
+/*   env_dollar_finder.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/12 02:38:53 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/27 02:49:58 by afaragi          ###   ########.fr       */
+/*   Created: 2020/01/24 03:57:15 by afaragi           #+#    #+#             */
+/*   Updated: 2020/01/30 18:27:34 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int		ft_echo(char **str, t_env *env)
+t_env		*env_dollar_finder(t_env *env, char *name)
 {
-	int	i;
-	int	j;
-	int	s;
+	t_env	*ptr;
+	int		i;
 
-	i = 1;
-	j = 0;
-	if (ft_strcmp(str[0], "echo") == 0 ||
-			ft_strcmp(str[0], "ECHO") == 0)
+	i = 0;
+	ptr = env;
+	if (ptr)
 	{
-		while (str[i])
+		while (ptr && ptr->name)
 		{
-			ft_putstr(str[i]);
-			if (str[i] && str[i + 1])
-				write(1, " ", 1);
-			i++;
+			while (name[i] && (ft_isalnum(name[i]) || name[i] == '_'))
+				i++;
+			if (ft_strncmp(ptr->name, name, i) == 0)
+				return (ptr);
+			ptr = ptr->next;
 		}
-		write(1, "\n", 1);
-		return (1);
 	}
-	return (0);
+	return (NULL);
 }

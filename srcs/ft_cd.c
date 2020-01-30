@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/08 01:34:51 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 03:56:56 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/30 17:25:46 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 void		ft_if_no_existe(t_env **env, char *envname)
 {
@@ -63,13 +63,19 @@ int			if_no_directory(t_cd *cd, t_cmd *cmd, char *str)
 
 void		if_no_env(t_cd *cd, t_env **env, char *name, char *spli)
 {
+	char *tst;
+
 	(*cd).ptr = search_env(*env, name);
 	if (!(*cd).ptr)
 		ft_if_no_existe(env, spli);
 	else
 	{
-		free((*cd).ptr->value);
-		(*cd).ptr->value = getcwd(NULL, 0);
+		if ((tst = getcwd(NULL, 0)) != NULL)
+		{
+			free((*cd).ptr->value);
+			(*cd).ptr->value = ft_strdup(tst);
+			free(tst);
+		}
 	}
 }
 

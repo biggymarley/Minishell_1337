@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 23:52:52 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 04:04:57 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/27 02:49:58 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 void		delkill(char **paths)
 {

@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 04:30:06 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 03:30:16 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/27 02:49:58 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int			search_found_replace(t_env **env, char **str)
 {

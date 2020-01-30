@@ -6,14 +6,14 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 19:13:51 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 00:25:46 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/27 02:49:58 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include "../minishell.h"
+# include "../include/minishell.h"
 
 typedef	struct		s_list
 {

@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 04:22:29 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 05:36:40 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/30 16:51:01 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int			is_it_exit(t_cmd *cmd)
 {
@@ -90,7 +90,6 @@ void		duplicate_and_execute(t_cmd *cmd)
 	if (!fork())
 	{
 		execve((*cmd).str[0], (*cmd).str, (*cmd).nev);
-		//perror((*cmd).str[0]);
 		if (access((*cmd).str[0], F_OK) != 0)
 		{
 			ft_putstr_fd((*cmd).str[0], 2);

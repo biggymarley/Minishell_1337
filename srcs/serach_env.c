@@ -6,16 +6,18 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 03:57:15 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 03:57:21 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/27 02:49:58 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 t_env		*search_env(t_env *env, char *name)
 {
 	t_env	*ptr;
+	int		i;
 
+	i = 0;
 	ptr = env;
 	if (ptr)
 	{

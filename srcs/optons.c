@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/05 22:20:17 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 03:06:41 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/27 02:49:58 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int		is_num(char *str)
 {

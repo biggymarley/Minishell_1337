@@ -6,38 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 04:12:16 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 03:00:11 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/30 18:27:03 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-int			cots_check(char **str)
-{
-	int		i;
-	int		balance;
-
-	i = 0;
-	balance = 0;
-	while ((*str)[i] != '\0')
-	{
-		if ((*str)[i] == '"' && balance != 2)
-			balance = (balance > 0) ? 0 : 1;
-		if ((*str)[i] == '\'' && balance != 1)
-			balance = (balance > 0) ? 0 : 2;
-		if ((*str)[i] == ' ' && (balance == 1 || balance == 2))
-			(*str)[i] = 5;
-		if ((*str)[i] == '\\' && balance == 0)
-			move_replace(&(*str)[i--]);
-		cut_quots(str, &i, balance);
-		i++;
-	}
-	if (balance == 0)
-		return (1);
-	else
-		ft_putstr_fd("Unmatched '.\n", 2);
-	return (0);
-}
+#include "../include/minishell.h"
 
 int			check_for_syntax(char *tmp, t_env *penv)
 {
@@ -59,14 +32,6 @@ int			check_for_syntax(char *tmp, t_env *penv)
 
 int			if_errors(t_vars *vars)
 {
-	if (check_for_syntax((*vars).tmp, (*vars).penv) == -1
-		&& (*vars).penv != NULL)
-	{
-		delkill((*vars).envs);
-		return (-1);
-	}
-	if ((*vars).tmp)
-		ft_strclr((*vars).tmp);
 	if ((*vars).penv == NULL)
 	{
 		ft_putalnum_fd((*vars).envs[(*vars).i], 2);
@@ -77,6 +42,23 @@ int			if_errors(t_vars *vars)
 	return (1);
 }
 
+int			replace_value(char **str, char *vars, char *value)
+{
+	char	*tmp;
+	size_t	i;
+
+	i = 0;
+	tmp = *str;
+	*str = ft_strjoin(*str, value);
+	free(tmp);
+	while (vars[i] && (ft_isalnum(vars[i]) || vars[i] == '_'))
+		i++;
+	tmp = *str;
+	*str = ft_strjoin(*str, &vars[i]);
+	free(tmp);
+	return (1);
+}
+
 int			ft_checker(char **str, t_env *env)
 {
 	t_vars vars;
@@ -84,20 +66,20 @@ int			ft_checker(char **str, t_env *env)
 	vars.i = 0;
 	if (!(vars.tmp = ft_strchr(*str, '$')))
 		return (1);
-	vars.tmp++;
 	if (vars.tmp)
 	{
 		vars.envs = ft_strsplit(vars.tmp, '$');
-		vars.tmp--;
+		ft_strclr(vars.tmp);
 		while (vars.envs[vars.i])
 		{
-			vars.penv = search_env(env, vars.envs[vars.i]);
+			vars.penv = env_dollar_finder(env, vars.envs[vars.i]);
 			if (if_errors(&vars) == -1)
 				return (-1);
 			else
-				*str = ft_strjoin(*str, vars.penv->value);
+				replace_value(str, vars.envs[vars.i], vars.penv->value);
 			vars.i++;
 		}
+		delkill(vars.envs);
 		return (1);
 	}
 	else

@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/02 01:11:23 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 00:26:30 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/27 02:49:57 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 t_env	*env_lst_adder(t_env **old, t_env *new)
 {

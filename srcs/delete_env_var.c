@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/16 02:16:58 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 00:46:00 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/27 02:49:57 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 int			if_alpha_num(char *name)
 {

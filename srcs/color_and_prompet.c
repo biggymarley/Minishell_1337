@@ -6,11 +6,11 @@
 /*   By: afaragi <afaragi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 04:24:52 by afaragi           #+#    #+#             */
-/*   Updated: 2020/01/24 04:37:30 by afaragi          ###   ########.fr       */
+/*   Updated: 2020/01/30 17:18:18 by afaragi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../include/minishell.h"
 
 void		write_prompet(char *dirname, t_cmd *cmd)
 {
